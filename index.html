@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWSデプロイ補助ツール（コピー＆名前置換）</title>
+<style>
+  :root { --accent:#0b6cf0; --bg:#f5f7fa; --card:#fff; --line:#dce3ec; --ink:#1c2733; --muted:#5b6b7b; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI",sans-serif;
+         background:var(--bg); color:var(--ink); line-height:1.6; }
+  header { background:var(--accent); color:#fff; padding:20px 24px; }
+  header h1 { margin:0; font-size:20px; }
+  header p { margin:4px 0 0; font-size:13px; opacity:.9; }
+  main { max-width:920px; margin:0 auto; padding:24px 16px 64px; }
+  .inputs { display:flex; flex-wrap:wrap; gap:16px; background:var(--card); border:1px solid var(--line);
+            border-radius:10px; padding:16px 18px; margin-bottom:24px; position:sticky; top:0; z-index:5; }
+  .field { display:flex; flex-direction:column; gap:4px; flex:1 1 260px; }
+  .field label { font-size:13px; font-weight:600; }
+  .field small { color:var(--muted); font-size:11px; }
+  .field input { font-size:15px; padding:8px 10px; border:1px solid var(--line); border-radius:6px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:20px; }
+  section h2 { margin:0 0 12px; font-size:16px; border-left:4px solid var(--accent); padding-left:10px; }
+  table { width:100%; border-collapse:collapse; }
+  th,td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  th { font-size:12px; color:var(--muted); font-weight:600; }
+  code,pre { font-family:"Consolas","SFMono-Regular",monospace; }
+  td code { background:#eef3f9; padding:2px 6px; border-radius:4px; }
+  pre { background:#0f1722; color:#e6edf3; padding:14px 16px; border-radius:8px; overflow:auto; margin:0; font-size:13px; }
+  .block { position:relative; margin-top:8px; }
+  .note { font-size:12px; color:var(--muted); margin:6px 0 0; }
+  .copy { cursor:pointer; border:1px solid var(--line); background:#fff; color:var(--accent);
+          font-size:12px; padding:5px 12px; border-radius:6px; white-space:nowrap; }
+  .copy:hover { background:#eef3f9; }
+  .block .copy { position:absolute; top:8px; right:8px; background:#1f2a37; color:#cfe1ff; border-color:#33414f; }
+  .row-copy { width:1%; }
+  ul.dll { margin:0; padding-left:18px; }
+  ul.dll li { font-family:monospace; font-size:13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>AWSデプロイ補助ツール</h1>
+  <p>名前を入れると、資料のコマンド・接続文字列が自分用に置き換わります。各ブロックはボタンでコピーできます。</p>
+</header>
+<main>
+  <div class="inputs">
+    <div class="field">
+      <label for="name">あなたの名前（ローマ字・小文字）</label>
+      <input id="name" type="text" value="ishikawa" autocomplete="off" spellcheck="false">
+      <small>例: tanaka → DB名は shoppingsite_tanaka などに置換されます</small>
+    </div>
+    <div class="field">
+      <label for="pw">RDS admin パスワード（任意・この画面だけで使用）</label>
+      <input id="pw" type="password" value="" autocomplete="off" placeholder="空のままなら &lt;password&gt; と表示">
+      <small>ブラウザ内でのみ使用。保存・送信されません。空欄なら接続文字列は &lt;password&gt; のまま。</small>
+    </div>
+  </div>
+
+  <section>
+    <h2>1. 名前で変わる値</h2>
+    <table>
+      <thead><tr><th>用途</th><th>値</th><th class="row-copy"></th></tr></thead>
+      <tbody>
+        <tr><td>キーペア名</td><td><code data-tpl="{{keypair}}"></code></td><td><button class="copy" data-copy="{{keypair}}">コピー</button></td></tr>
+        <tr><td>セキュリティグループ名</td><td><code data-tpl="{{sg}}"></code></td><td><button class="copy" data-copy="{{sg}}">コピー</button></td></tr>
+        <tr><td>EC2インスタンス名</td><td><code data-tpl="{{ec2}}"></code></td><td><button class="copy" data-copy="{{ec2}}">コピー</button></td></tr>
+        <tr><td>データベース名</td><td><code data-tpl="{{db}}"></code></td><td><button class="copy" data-copy="{{db}}">コピー</button></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>2. 固定値（全員共通）</h2>
+    <table>
+      <thead><tr><th>項目</th><th>値</th><th class="row-copy"></th></tr></thead>
+      <tbody>
+        <tr><td>リージョン</td><td><code>ap-northeast-1</code></td><td><button class="copy" data-copy="ap-northeast-1">コピー</button></td></tr>
+        <tr><td>VPC</td><td><code>vpc-069fdfea7a3c70917</code></td><td><button class="copy" data-copy="vpc-069fdfea7a3c70917">コピー</button></td></tr>
+        <tr><td>RDSエンドポイント</td><td><code>newemployeetraining2026forcsharp.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com</code></td><td><button class="copy" data-copy="newemployeetraining2026forcsharp.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com">コピー</button></td></tr>
+        <tr><td>admin ユーザー</td><td><code>admin</code></td><td><button class="copy" data-copy="admin">コピー</button></td></tr>
+        <tr><td>ポート</td><td><code>1433</code></td><td><button class="copy" data-copy="1433">コピー</button></td></tr>
+        <tr><td>SG 説明文</td><td><code>EC2 Windows RDP AND HTTP</code></td><td><button class="copy" data-copy="EC2 Windows RDP AND HTTP">コピー</button></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>3-1. DB入れ替え（フルリフレッシュ）SQL</h2>
+    <p class="note">SSMSの New Query で実行。クエリ窓のDBは <code>master</code> に。対象DBノードは折りたたむ。RDSは SINGLE_USER 不可のため KILL してから DROP。初回は DROP が自動スキップされます。</p>
+    <div class="block">
+      <button class="copy" data-copy-target="sql-refresh">コピー</button>
+      <pre id="sql-refresh" data-tpl="USE master;
+GO
+-- 対象DBを使用中のセッションをKILL（RDSはSINGLE_USER不可のため）
+DECLARE @kill nvarchar(max) = N'';
+SELECT @kill += N'KILL ' + CAST(session_id AS nvarchar(10)) + N';'
+FROM sys.dm_exec_sessions
+WHERE database_id = DB_ID('{{db}}') AND session_id <> @@SPID;
+EXEC(@kill);
+GO
+IF DB_ID('{{db}}') IS NOT NULL   -- 存在する場合のみ（初回はスキップ）
+    DROP DATABASE {{db}};
+GO
+CREATE DATABASE {{db}};
+GO"></pre>
+    </div>
+  </section>
+
+  <section>
+    <h2>3-2. web.config 接続文字列</h2>
+    <p class="note">SQL認証で1行。<code>Trusted_Connection</code> / <code>Integrated Security</code> は入れない（入れると NT AUTHORITY\ANONYMOUS LOGON エラー）。<code>providerName="System.Data.SqlClient"</code>。</p>
+    <div class="block">
+      <button class="copy" data-copy-target="connstr">コピー</button>
+      <pre id="connstr" data-tpl="Server={{rdsEndpoint}};Database={{db}};User Id=admin;Password={{password}};Connection Timeout=10;"></pre>
+    </div>
+  </section>
+
+  <section>
+    <h2>3-3. 不足DLLチェックリスト（トラブルシュートA）</h2>
+    <p class="note"><code>Server Error</code> ＋ <code>Could not load file or assembly ...</code> が出たら、<code>C:\inetpub\wwwroot\bin</code> に下記が揃っているか確認。不足分はローカルの NuGet <code>packages\</code> またはビルド出力 <code>bin\</code> からコピー。</p>
+    <ul class="dll">
+      <li>System.Web.Mvc.dll</li>
+      <li>System.Web.Razor.dll</li>
+      <li>System.Web.WebPages.dll</li>
+      <li>System.Web.WebPages.Razor.dll</li>
+      <li>System.Web.WebPages.Deployment.dll</li>
+      <li>System.Web.Helpers.dll</li>
+      <li>Microsoft.Web.Infrastructure.dll</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+  var FIXED = { rdsEndpoint: "newemployeetraining2026forcsharp.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com" };
+
+  function vals() {
+    var raw = document.getElementById("name").value.trim();
+    var n = raw === "" ? "ishikawa" : raw;
+    var pw = document.getElementById("pw").value;
+    return {
+      "{{name}}": n,
+      "{{keypair}}": n + "-key",
+      "{{sg}}": n + "-ec2-sg",
+      "{{ec2}}": n + "_web_server",
+      "{{db}}": "shoppingsite_" + n,
+      "{{rdsEndpoint}}": FIXED.rdsEndpoint,
+      "{{password}}": pw === "" ? "<password>" : pw
+    };
+  }
+
+  function fill(tpl, v) {
+    return tpl.replace(/\{\{[a-zA-Z]+\}\}/g, function (m) {
+      return Object.prototype.hasOwnProperty.call(v, m) ? v[m] : m;
+    });
+  }
+
+  function render() {
+    var v = vals();
+    var els = document.querySelectorAll("[data-tpl]");
+    for (var i = 0; i < els.length; i++) {
+      els[i].textContent = fill(els[i].getAttribute("data-tpl"), v);
+    }
+  }
+
+  function resolveCopyText(btn) {
+    var tid = btn.getAttribute("data-copy-target");
+    if (tid) { return document.getElementById(tid).textContent; }
+    var raw = btn.getAttribute("data-copy");
+    return fill(raw, vals());
+  }
+
+  function copy(btn) {
+    var text = resolveCopyText(btn);
+    var done = function () {
+      var old = btn.textContent;
+      btn.textContent = "コピーしました";
+      setTimeout(function () { btn.textContent = old; }, 1200);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallback(text); done(); });
+    } else {
+      fallback(text); done();
+    }
+  }
+
+  function fallback(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  document.getElementById("name").addEventListener("input", render);
+  document.getElementById("pw").addEventListener("input", render);
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest ? e.target.closest(".copy") : null;
+    if (btn) { copy(btn); }
+  });
+  render();
+</script>
+</body>
+</html>
