@@ -150,7 +150,7 @@ GO"></pre>
   }
 
   function fill(tpl, v) {
-    return tpl.replace(/\{\{[a-zA-Z]+\}\}/g, function (m) {
+    return tpl.replace(/\{\{[a-zA-Z0-9]+\}\}/g, function (m) {
       return Object.prototype.hasOwnProperty.call(v, m) ? v[m] : m;
     });
   }
