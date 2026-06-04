@@ -173,7 +173,7 @@ GO"></pre>
       <table>
         <thead><tr><th>項目</th><th>値</th><th class="row-copy"></th></tr></thead>
         <tbody>
-          <tr><td>RDSエンドポイント(MySQL)</td><td><code>{{java_rds_endpoint}}</code></td><td><button class="copy" data-copy="{{java_rds_endpoint}}">コピー</button></td></tr>
+          <tr><td>RDSエンドポイント(MySQL)</td><td><code>newemployeetraining2026forjava.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com</code></td><td><button class="copy" data-copy="newemployeetraining2026forjava.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com">コピー</button></td></tr>
           <tr><td>admin パスワード</td><td><code>{{java_rds_password}}</code></td><td><button class="copy" data-copy="{{java_rds_password}}">コピー</button></td></tr>
           <tr><td>セキュリティグループ名</td><td><code>{{java_sg_name}}</code></td><td><button class="copy" data-copy="{{java_sg_name}}">コピー</button></td></tr>
           <tr><td>ポート</td><td><code>3306</code></td><td><button class="copy" data-copy="3306">コピー</button></td></tr>
@@ -350,7 +350,7 @@ WantedBy=multi-user.target</pre>
       </div>
       <div class="block">
         <button class="copy" data-copy-target="j-mysql-connect">コピー</button>
-        <pre id="j-mysql-connect">mysql -h {{java_rds_endpoint}} -u admin -p</pre>
+        <pre id="j-mysql-connect">mysql -h newemployeetraining2026forjava.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com -u admin -p</pre>
       </div>
     </section>
 
@@ -451,7 +451,7 @@ WantedBy=multi-user.target</pre>
   function updateJava(){
     var dbEl = document.getElementById('jdb');
     var db = (dbEl && dbEl.value) ? dbEl.value : 'shoppingsite_name';
-    var ep = '{{java_rds_endpoint}}';
+    var ep = 'newemployeetraining2026forjava.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com';
     var pw = '{{java_rds_password}}';
     var ctx = document.getElementById('j-context');
     if(ctx){ ctx.textContent =
