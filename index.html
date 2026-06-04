@@ -44,6 +44,11 @@
   <p>名前を入れると、資料のコマンド・接続文字列が自分用に置き換わります。各ブロックはボタンでコピーできます。</p>
 </header>
 <main>
+  <div class="langtoggle" style="display:flex;gap:8px;margin-bottom:16px;">
+    <button id="btn-csharp" class="copy" onclick="setLang('csharp')">C#</button>
+    <button id="btn-java"   class="copy" onclick="setLang('java')">Java</button>
+  </div>
+  <div id="lang-csharp" data-lang>
   <div class="inputs">
     <div class="field">
       <label for="name">あなたの名前（ローマ字・小文字）</label>
@@ -115,9 +120,233 @@ GO"></pre>
       <pre id="connstr" data-tpl='&lt;add name="DefaultConnection" connectionString="Server={{rdsEndpoint}};Database={{db}};User Id=admin;Password={{password}};Connection Timeout=10;" providerName="System.Data.SqlClient" /&gt;'></pre>
     </div>
   </section>
+  </div><!-- #lang-csharp -->
+
+  <div id="lang-java" data-lang style="display:none;">
+
+    <section>
+      <h2>Java：固定値（2026・要差し替え）</h2>
+      <table>
+        <thead><tr><th>項目</th><th>値</th><th class="row-copy"></th></tr></thead>
+        <tbody>
+          <tr><td>RDSエンドポイント(MySQL)</td><td><code>{{java_rds_endpoint}}</code></td><td><button class="copy" data-copy="{{java_rds_endpoint}}">コピー</button></td></tr>
+          <tr><td>admin パスワード</td><td><code>{{java_rds_password}}</code></td><td><button class="copy" data-copy="{{java_rds_password}}">コピー</button></td></tr>
+          <tr><td>VPC</td><td><code>{{java_vpc}}</code></td><td><button class="copy" data-copy="{{java_vpc}}">コピー</button></td></tr>
+          <tr><td>セキュリティグループ名</td><td><code>{{java_sg_name}}</code></td><td><button class="copy" data-copy="{{java_sg_name}}">コピー</button></td></tr>
+          <tr><td>ポート</td><td><code>3306</code></td><td><button class="copy" data-copy="3306">コピー</button></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Java：受講者サブネットCIDR（2026・要差し替え）</h2>
+      <p class="note">2026年の名簿・割当が決まり次第、この表を差し替える（<code>{{java_cidr_table}}</code>）。</p>
+      <table>
+        <thead><tr><th>氏名</th><th>CIDR</th><th class="row-copy"></th></tr></thead>
+        <tbody>
+          <tr><td>（氏名）</td><td><code>10.0.x.x/28</code></td><td><button class="copy" data-copy="10.0.x.x/28">コピー</button></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Java：環境構築コマンド</h2>
+
+      <h3>Java（JDK）</h3>
+      <div class="block">
+        <button class="copy" data-copy-target="j-jdk-wget">コピー</button>
+        <pre id="j-jdk-wget">sudo wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-jdk-tar">コピー</button>
+        <pre id="j-jdk-tar">sudo tar xzvf jdk-21_linux-x64_bin.tar.gz</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-jdk-mv">コピー</button>
+        <pre id="j-jdk-mv">sudo mv jdk-21.0.7/ /opt/</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-alt-java">コピー</button>
+        <pre id="j-alt-java">sudo alternatives --install /usr/bin/java java /opt/jdk-21.0.7/bin/java 1</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-alt-jar">コピー</button>
+        <pre id="j-alt-jar">sudo alternatives --install /usr/bin/jar jar /opt/jdk-21.0.7/bin/jar 1</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-alt-javac">コピー</button>
+        <pre id="j-alt-javac">sudo alternatives --install /usr/bin/javac javac /opt/jdk-21.0.7/bin/javac 1</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-java-version">コピー</button>
+        <pre id="j-java-version">java -version</pre>
+      </div>
+
+      <h3>Apache (httpd)</h3>
+      <div class="block">
+        <button class="copy" data-copy-target="j-httpd-install">コピー</button>
+        <pre id="j-httpd-install">sudo yum install httpd</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-mkdir-html">コピー</button>
+        <pre id="j-mkdir-html">sudo mkdir -p /home/sample/html</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-ls-sample">コピー</button>
+        <pre id="j-ls-sample">ls -ltr /home/sample</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-cp-index">コピー</button>
+        <pre id="j-cp-index">sudo cp index.html /home/sample/html/</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-ls-html">コピー</button>
+        <pre id="j-ls-html">ls -ltr /home/sample/html/</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-vi-httpd">コピー</button>
+        <pre id="j-vi-httpd">sudo vi /etc/httpd/conf/httpd.conf</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-docroot">コピー</button>
+        <pre id="j-docroot">DocumentRoot "/home/sample/html"</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-directory">コピー</button>
+        <pre id="j-directory">&lt;Directory "/home/sample/html"&gt;</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-proxy">コピー</button>
+        <pre id="j-proxy">ProxyPass /ShoppingSite ajp://localhost:8009/ShoppingSite
+ProxyPassReverse /ShoppingSite ajp://localhost:8009/ShoppingSite</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-httpd-start">コピー</button>
+        <pre id="j-httpd-start">sudo service httpd start</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-httpd-restart">コピー</button>
+        <pre id="j-httpd-restart">sudo service httpd restart</pre>
+      </div>
+
+      <h3>Tomcat</h3>
+      <div class="block">
+        <button class="copy" data-copy-target="j-tomcat-wget">コピー</button>
+        <pre id="j-tomcat-wget">wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.41/bin/apache-tomcat-10.1.41.tar.gz</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-tomcat-tar">コピー</button>
+        <pre id="j-tomcat-tar">tar -xvzf apache-tomcat-10.1.41.tar.gz</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-tomcat-mv">コピー</button>
+        <pre id="j-tomcat-mv">sudo mv apache-tomcat-10.1.41 /opt/tomcat-10</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-vi-service">コピー</button>
+        <pre id="j-vi-service">sudo vi /etc/systemd/system/tomcat.service</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-service-content">コピー</button>
+        <pre id="j-service-content">[Unit]
+Description=Apache Tomcat
+After=network.target
+[Service]
+Type=forking
+Environment=CATALINA_PID=/opt/tomcat-10/temp/tomcat10.pid
+Environment=JAVA_HOME=/opt/jdk-21.0.7
+Environment=CATALINA_HOME=/opt/tomcat-10
+Environment=CATALINA_BASE=/opt/tomcat-10
+Environment="CATALINA_OPTS=-Xms512m -Xmx1G"
+Environment="JAVA_OPTS=-Dfile.encoding=UTF-8 -Djava.awt.headless=true"
+ExecStart=/opt/tomcat-10/bin/startup.sh
+ExecStop=/opt/tomcat-10/bin/shutdown.sh
+User=tomcat
+Group=tomcat
+[Install]
+WantedBy=multi-user.target</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-groupadd">コピー</button>
+        <pre id="j-groupadd">sudo groupadd tomcat</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-useradd">コピー</button>
+        <pre id="j-useradd">sudo useradd -r tomcat -s /bin/false -g tomcat</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-chgrp">コピー</button>
+        <pre id="j-chgrp">sudo chgrp -R tomcat /opt/tomcat-10</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-chown">コピー</button>
+        <pre id="j-chown">sudo chown -R tomcat /opt/tomcat-10</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-vi-serverxml">コピー</button>
+        <pre id="j-vi-serverxml">sudo vi /opt/tomcat-10/conf/server.xml</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-tomcat-start">コピー</button>
+        <pre id="j-tomcat-start">sudo service tomcat start</pre>
+      </div>
+
+      <h3>MySQLクライアント・RDS接続</h3>
+      <div class="block">
+        <button class="copy" data-copy-target="j-mysql-repo">コピー</button>
+        <pre id="j-mysql-repo">sudo dnf -y localinstall https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-mysql-gpg">コピー</button>
+        <pre id="j-mysql-gpg">sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-mysql-install">コピー</button>
+        <pre id="j-mysql-install">sudo dnf -y install mysql-community-client</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-mysql-version">コピー</button>
+        <pre id="j-mysql-version">mysql --version</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-mysql-chown">コピー</button>
+        <pre id="j-mysql-chown">sudo chown -R mysql:mysql /var/lib/mysql</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-mysql-chmod">コピー</button>
+        <pre id="j-mysql-chmod">sudo chmod 755 /var/lib/mysql</pre>
+      </div>
+      <div class="block">
+        <button class="copy" data-copy-target="j-mysql-connect">コピー</button>
+        <pre id="j-mysql-connect">mysql -h {{java_rds_endpoint}} -u admin -p</pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Java：デプロイ（DB名を入れると生成）</h2>
+      <div class="field">
+        <label for="jdb">DB名</label>
+        <input id="jdb" type="text" value="shoppingsite_name" oninput="updateJava()">
+      </div>
+      <p class="note">context.xml と source コマンドに反映されます。</p>
+      <div class="block"><button class="copy" data-copy-target="j-context">コピー</button>
+        <pre id="j-context"></pre></div>
+      <div class="block"><button class="copy" data-copy-target="j-source">コピー</button>
+        <pre id="j-source"></pre></div>
+    </section>
+
+  </div><!-- #lang-java -->
 </main>
 
 <script>
+  function setLang(lang){
+    document.getElementById('lang-csharp').style.display = (lang==='csharp')?'block':'none';
+    document.getElementById('lang-java').style.display   = (lang==='java')?'block':'none';
+    document.getElementById('btn-csharp').style.fontWeight = (lang==='csharp')?'700':'400';
+    document.getElementById('btn-java').style.fontWeight   = (lang==='java')?'700':'400';
+  }
+  document.addEventListener('DOMContentLoaded', function(){ setLang('csharp'); });
+
   var FIXED = { rdsEndpoint: "newemployeetraining2026forcsharp.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com" };
 
   function vals() {
@@ -186,6 +415,19 @@ GO"></pre>
     if (btn) { copy(btn); }
   });
   render();
+
+  function updateJava(){
+    var dbEl = document.getElementById('jdb');
+    var db = (dbEl && dbEl.value) ? dbEl.value : 'shoppingsite_name';
+    var ep = '{{java_rds_endpoint}}';
+    var pw = '{{java_rds_password}}';
+    var ctx = document.getElementById('j-context');
+    if(ctx){ ctx.textContent =
+      '<Context>\n  <Resource name="jdbc/MyDB" auth="Container" type="javax.sql.DataSource"\n    driverClassName="com.mysql.cj.jdbc.Driver"\n    url="jdbc:mysql://'+ep+':3306/'+db+'"\n    username="admin" password="'+pw+'"\n    maxActive="20" maxIdle="10" maxWait="-1"/>\n</Context>'; }
+    var src = document.getElementById('j-source');
+    if(src){ src.textContent = 'source <ダンプファイル名>.sql;'; }
+  }
+  document.addEventListener('DOMContentLoaded', updateJava);
 </script>
 </body>
 </html>
