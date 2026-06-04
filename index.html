@@ -36,6 +36,12 @@
   .row-copy { width:1%; }
   ul.dll { margin:0; padding-left:18px; }
   ul.dll li { font-family:monospace; font-size:13px; }
+  .langtoggle { display:flex; gap:0; margin-bottom:24px; border-bottom:2px solid var(--line); }
+  .langtoggle .tab { cursor:pointer; border:none; background:transparent; color:var(--muted);
+                     font-size:15px; font-weight:600; padding:10px 22px; border-bottom:3px solid transparent;
+                     margin-bottom:-2px; transition:color .15s, border-color .15s; }
+  .langtoggle .tab:hover { color:var(--ink); }
+  .langtoggle .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
 </style>
 </head>
 <body>
@@ -44,10 +50,10 @@
   <p>名前を入れると、資料のコマンド・接続文字列が自分用に置き換わります。各ブロックはボタンでコピーできます。</p>
 </header>
 <main>
-  <div class="langtoggle" style="display:flex;gap:8px;margin-bottom:16px;">
-    <button id="btn-common" class="copy" onclick="setLang('common')">共通</button>
-    <button id="btn-csharp" class="copy" onclick="setLang('csharp')">C#</button>
-    <button id="btn-java"   class="copy" onclick="setLang('java')">Java</button>
+  <div class="langtoggle">
+    <button id="btn-common" class="tab" onclick="setLang('common')">共通</button>
+    <button id="btn-java"   class="tab" onclick="setLang('java')">Java</button>
+    <button id="btn-csharp" class="tab" onclick="setLang('csharp')">C#</button>
   </div>
 
   <div id="lang-common" data-lang>
@@ -366,12 +372,10 @@ WantedBy=multi-user.target</pre>
 
 <script>
   function setLang(lang){
-    document.getElementById('lang-common').style.display = (lang==='common')?'block':'none';
-    document.getElementById('lang-csharp').style.display = (lang==='csharp')?'block':'none';
-    document.getElementById('lang-java').style.display   = (lang==='java')?'block':'none';
-    document.getElementById('btn-common').style.fontWeight = (lang==='common')?'700':'400';
-    document.getElementById('btn-csharp').style.fontWeight = (lang==='csharp')?'700':'400';
-    document.getElementById('btn-java').style.fontWeight   = (lang==='java')?'700':'400';
+    ['common','java','csharp'].forEach(function(k){
+      document.getElementById('lang-'+k).style.display = (k===lang)?'block':'none';
+      document.getElementById('btn-'+k).classList.toggle('active', k===lang);
+    });
   }
   document.addEventListener('DOMContentLoaded', function(){ setLang('common'); });
 
