@@ -115,11 +115,6 @@ GO"></pre>
       <pre id="connstr" data-tpl='&lt;add name="DefaultConnection" connectionString="Server={{rdsEndpoint}};Database={{db}};User Id=admin;Password={{password}};Connection Timeout=10;" providerName="System.Data.SqlClient" /&gt;'></pre>
     </div>
   </section>
-
-  <section>
-    <h2>3-3. アセンブリ不足エラー時のチェック（トラブルシュートA）</h2>
-    <p class="note"><b>Web Forms では通常発生しません</b>（標準の <code>System.Web</code> で動くため）。外部ライブラリ（NuGet）を参照している場合に <code>Server Error</code> ＋ <code>Could not load file or assembly ...</code> が出たら、エラーに表示された DLL がローカルのビルド出力 <code>bin\</code> または NuGet の <code>packages\</code> にあるかを確認し、<code>C:\inetpub\wwwroot\bin</code> へコピーしてください。</p>
-  </section>
 </main>
 
 <script>
