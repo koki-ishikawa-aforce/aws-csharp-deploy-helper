@@ -195,19 +195,19 @@ GO"></pre>
       </div>
       <div class="block">
         <button class="copy" data-copy-target="j-jdk-mv">コピー</button>
-        <pre id="j-jdk-mv">sudo mv jdk-21.0.7/ /opt/</pre>
+        <pre id="j-jdk-mv">sudo mv jdk-21.0.11/ /opt/</pre>
       </div>
       <div class="block">
         <button class="copy" data-copy-target="j-alt-java">コピー</button>
-        <pre id="j-alt-java">sudo alternatives --install /usr/bin/java java /opt/jdk-21.0.7/bin/java 1</pre>
+        <pre id="j-alt-java">sudo alternatives --install /usr/bin/java java /opt/jdk-21.0.11/bin/java 1</pre>
       </div>
       <div class="block">
         <button class="copy" data-copy-target="j-alt-jar">コピー</button>
-        <pre id="j-alt-jar">sudo alternatives --install /usr/bin/jar jar /opt/jdk-21.0.7/bin/jar 1</pre>
+        <pre id="j-alt-jar">sudo alternatives --install /usr/bin/jar jar /opt/jdk-21.0.11/bin/jar 1</pre>
       </div>
       <div class="block">
         <button class="copy" data-copy-target="j-alt-javac">コピー</button>
-        <pre id="j-alt-javac">sudo alternatives --install /usr/bin/javac javac /opt/jdk-21.0.7/bin/javac 1</pre>
+        <pre id="j-alt-javac">sudo alternatives --install /usr/bin/javac javac /opt/jdk-21.0.11/bin/javac 1</pre>
       </div>
       <div class="block">
         <button class="copy" data-copy-target="j-java-version">コピー</button>
@@ -286,7 +286,7 @@ After=network.target
 [Service]
 Type=forking
 Environment=CATALINA_PID=/opt/tomcat-10/temp/tomcat10.pid
-Environment=JAVA_HOME=/opt/jdk-21.0.7
+Environment=JAVA_HOME=/opt/jdk-21.0.11
 Environment=CATALINA_HOME=/opt/tomcat-10
 Environment=CATALINA_BASE=/opt/tomcat-10
 Environment="CATALINA_OPTS=-Xms512m -Xmx1G"
