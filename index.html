@@ -355,12 +355,20 @@ WantedBy=multi-user.target</pre>
     </section>
 
     <section>
-      <h2>Java：デプロイ（DB名を入れると生成）</h2>
-      <div class="field">
-        <label for="jdb">DB名</label>
-        <input id="jdb" type="text" value="shoppingsite_name" oninput="updateJava()">
+      <h2>Java：デプロイ（DB名・ダンプファイル名を入れると生成）</h2>
+      <div class="inputs">
+        <div class="field">
+          <label for="jdb">DB名</label>
+          <input id="jdb" type="text" value="shoppingsite_name" oninput="updateJava()">
+          <small>context.xml の接続URLと <code>use ＤＢ名;</code> に反映</small>
+        </div>
+        <div class="field">
+          <label for="jdump">ダンプファイル名</label>
+          <input id="jdump" type="text" value="" autocomplete="off" placeholder="例: shoppingsite.sql" oninput="updateJava()">
+          <small>EC2 へ送ったダンプファイルの名前。<code>source</code> コマンドに反映</small>
+        </div>
       </div>
-      <p class="note">context.xml と source コマンドに反映されます。</p>
+      <p class="note">context.xml（DB名）と DB投入コマンド（ダンプファイル名・DB名）に反映されます。</p>
       <div class="block"><button class="copy" data-copy-target="j-context">コピー</button>
         <pre id="j-context"></pre></div>
       <div class="block"><button class="copy" data-copy-target="j-source">コピー</button>
@@ -456,8 +464,11 @@ WantedBy=multi-user.target</pre>
     var ctx = document.getElementById('j-context');
     if(ctx){ ctx.textContent =
       '<Context>\n  <Resource name="jdbc/MyDB" auth="Container" type="javax.sql.DataSource"\n    driverClassName="com.mysql.cj.jdbc.Driver"\n    url="jdbc:mysql://'+ep+':3306/'+db+'"\n    username="admin" password="'+pw+'"\n    maxActive="20" maxIdle="10" maxWait="-1"/>\n</Context>'; }
+    var dumpEl = document.getElementById('jdump');
+    var dump = (dumpEl && dumpEl.value.trim()) ? dumpEl.value.trim() : '<ダンプファイル名>.sql';
     var src = document.getElementById('j-source');
-    if(src){ src.textContent = 'source <ダンプファイル名>.sql;'; }
+    if(src){ src.textContent =
+      'source ' + dump + ';\nshow databases;\nuse ' + db + ';\nselect * from <table名>;'; }
   }
   document.addEventListener('DOMContentLoaded', updateJava);
 </script>
