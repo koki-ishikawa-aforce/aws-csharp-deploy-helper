@@ -45,10 +45,49 @@
 </header>
 <main>
   <div class="langtoggle" style="display:flex;gap:8px;margin-bottom:16px;">
+    <button id="btn-common" class="copy" onclick="setLang('common')">共通</button>
     <button id="btn-csharp" class="copy" onclick="setLang('csharp')">C#</button>
     <button id="btn-java"   class="copy" onclick="setLang('java')">Java</button>
   </div>
-  <div id="lang-csharp" data-lang>
+
+  <div id="lang-common" data-lang>
+  <section>
+    <h2>共通の固定値（C#・Java 共通）</h2>
+    <table>
+      <thead><tr><th>項目</th><th>値</th><th class="row-copy"></th></tr></thead>
+      <tbody>
+        <tr><td>リージョン</td><td><code>ap-northeast-1</code></td><td><button class="copy" data-copy="ap-northeast-1">コピー</button></td></tr>
+        <tr><td>VPC</td><td><code>vpc-069fdfea7a3c70917</code></td><td><button class="copy" data-copy="vpc-069fdfea7a3c70917">コピー</button></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>受講者サブネット割り当て（一人1つ・最小 /28）</h2>
+    <p class="note"><code>10.0.0.0/24</code>（10.0.0.x）は共通資源用に予約済みのため使用しない。各受講者は下表の <code>/28</code>（IP 16個・うち利用可能 11個＝AWSの最小サブネットサイズ）を1つだけ作成する。VPC・リージョンは上の共通固定値を使用。</p>
+    <table>
+      <thead><tr><th>氏名</th><th>CIDR</th><th class="row-copy"></th></tr></thead>
+      <tbody>
+        <tr><td>渡邉涼太</td><td><code>10.0.1.0/28</code></td><td><button class="copy" data-copy="10.0.1.0/28">コピー</button></td></tr>
+        <tr><td>高田妃菜</td><td><code>10.0.2.0/28</code></td><td><button class="copy" data-copy="10.0.2.0/28">コピー</button></td></tr>
+        <tr><td>今滿貫志</td><td><code>10.0.3.0/28</code></td><td><button class="copy" data-copy="10.0.3.0/28">コピー</button></td></tr>
+        <tr><td>田中夏弥</td><td><code>10.0.4.0/28</code></td><td><button class="copy" data-copy="10.0.4.0/28">コピー</button></td></tr>
+        <tr><td>片村涼乃</td><td><code>10.0.5.0/28</code></td><td><button class="copy" data-copy="10.0.5.0/28">コピー</button></td></tr>
+        <tr><td>村石莉彩</td><td><code>10.0.6.0/28</code></td><td><button class="copy" data-copy="10.0.6.0/28">コピー</button></td></tr>
+        <tr><td>小林慧</td><td><code>10.0.7.0/28</code></td><td><button class="copy" data-copy="10.0.7.0/28">コピー</button></td></tr>
+        <tr><td>三好利佳</td><td><code>10.0.8.0/28</code></td><td><button class="copy" data-copy="10.0.8.0/28">コピー</button></td></tr>
+        <tr><td>朝田陸仁</td><td><code>10.0.9.0/28</code></td><td><button class="copy" data-copy="10.0.9.0/28">コピー</button></td></tr>
+        <tr><td>横溝祐生也</td><td><code>10.0.10.0/28</code></td><td><button class="copy" data-copy="10.0.10.0/28">コピー</button></td></tr>
+        <tr><td>伊勢崎笙子</td><td><code>10.0.11.0/28</code></td><td><button class="copy" data-copy="10.0.11.0/28">コピー</button></td></tr>
+        <tr><td>近畑晴斗</td><td><code>10.0.12.0/28</code></td><td><button class="copy" data-copy="10.0.12.0/28">コピー</button></td></tr>
+        <tr><td>田中ネオ</td><td><code>10.0.13.0/28</code></td><td><button class="copy" data-copy="10.0.13.0/28">コピー</button></td></tr>
+        <tr><td>木村倖大</td><td><code>10.0.14.0/28</code></td><td><button class="copy" data-copy="10.0.14.0/28">コピー</button></td></tr>
+      </tbody>
+    </table>
+  </section>
+  </div><!-- #lang-common -->
+
+  <div id="lang-csharp" data-lang style="display:none;">
   <div class="inputs">
     <div class="field">
       <label for="name">あなたの名前（ローマ字・小文字）</label>
@@ -76,12 +115,11 @@
   </section>
 
   <section>
-    <h2>2. 固定値（全員共通）</h2>
+    <h2>2. C#の固定値（SQL Server / RDS）</h2>
+    <p class="note">リージョン・VPC は「共通」タブを参照。</p>
     <table>
       <thead><tr><th>項目</th><th>値</th><th class="row-copy"></th></tr></thead>
       <tbody>
-        <tr><td>リージョン</td><td><code>ap-northeast-1</code></td><td><button class="copy" data-copy="ap-northeast-1">コピー</button></td></tr>
-        <tr><td>VPC</td><td><code>vpc-069fdfea7a3c70917</code></td><td><button class="copy" data-copy="vpc-069fdfea7a3c70917">コピー</button></td></tr>
         <tr><td>RDSエンドポイント</td><td><code>newemployeetraining2026forcsharp.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com</code></td><td><button class="copy" data-copy="newemployeetraining2026forcsharp.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com">コピー</button></td></tr>
         <tr><td>admin ユーザー</td><td><code>admin</code></td><td><button class="copy" data-copy="admin">コピー</button></td></tr>
         <tr><td>ポート</td><td><code>1433</code></td><td><button class="copy" data-copy="1433">コピー</button></td></tr>
@@ -131,20 +169,8 @@ GO"></pre>
         <tbody>
           <tr><td>RDSエンドポイント(MySQL)</td><td><code>{{java_rds_endpoint}}</code></td><td><button class="copy" data-copy="{{java_rds_endpoint}}">コピー</button></td></tr>
           <tr><td>admin パスワード</td><td><code>{{java_rds_password}}</code></td><td><button class="copy" data-copy="{{java_rds_password}}">コピー</button></td></tr>
-          <tr><td>VPC</td><td><code>{{java_vpc}}</code></td><td><button class="copy" data-copy="{{java_vpc}}">コピー</button></td></tr>
           <tr><td>セキュリティグループ名</td><td><code>{{java_sg_name}}</code></td><td><button class="copy" data-copy="{{java_sg_name}}">コピー</button></td></tr>
           <tr><td>ポート</td><td><code>3306</code></td><td><button class="copy" data-copy="3306">コピー</button></td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section>
-      <h2>Java：受講者サブネットCIDR（2026・要差し替え）</h2>
-      <p class="note">2026年の名簿・割当が決まり次第、この表を差し替える（<code>{{java_cidr_table}}</code>）。</p>
-      <table>
-        <thead><tr><th>氏名</th><th>CIDR</th><th class="row-copy"></th></tr></thead>
-        <tbody>
-          <tr><td>（氏名）</td><td><code>10.0.x.x/28</code></td><td><button class="copy" data-copy="10.0.x.x/28">コピー</button></td></tr>
         </tbody>
       </table>
     </section>
@@ -340,12 +366,14 @@ WantedBy=multi-user.target</pre>
 
 <script>
   function setLang(lang){
+    document.getElementById('lang-common').style.display = (lang==='common')?'block':'none';
     document.getElementById('lang-csharp').style.display = (lang==='csharp')?'block':'none';
     document.getElementById('lang-java').style.display   = (lang==='java')?'block':'none';
+    document.getElementById('btn-common').style.fontWeight = (lang==='common')?'700':'400';
     document.getElementById('btn-csharp').style.fontWeight = (lang==='csharp')?'700':'400';
     document.getElementById('btn-java').style.fontWeight   = (lang==='java')?'700':'400';
   }
-  document.addEventListener('DOMContentLoaded', function(){ setLang('csharp'); });
+  document.addEventListener('DOMContentLoaded', function(){ setLang('common'); });
 
   var FIXED = { rdsEndpoint: "newemployeetraining2026forcsharp.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com" };
 
