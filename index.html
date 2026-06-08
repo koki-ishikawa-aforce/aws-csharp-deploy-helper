@@ -26,6 +26,8 @@
   th { font-size:12px; color:var(--muted); font-weight:600; }
   code,pre { font-family:"Consolas","SFMono-Regular",monospace; }
   td code { background:#eef3f9; padding:2px 6px; border-radius:4px; }
+  td a { color:var(--accent); text-decoration:underline; }
+  td a code { color:var(--accent); cursor:pointer; }
   pre { background:#0f1722; color:#e6edf3; padding:14px 16px; border-radius:8px; overflow:auto; margin:0; font-size:13px; }
   .block { position:relative; margin-top:8px; }
   .note { font-size:12px; color:var(--muted); margin:6px 0 0; }
@@ -57,6 +59,18 @@
   </div>
 
   <div id="lang-common" data-lang>
+  <section>
+    <h2>AWSマネジメントコンソール ログイン</h2>
+    <p class="note">下のサインインURLを開くと、アカウントID入りのログイン画面に進みます。IAMユーザー名（イニシャル+姓・例 <code>t.yamada</code>）と初期パスワードでサインインしてください。</p>
+    <table>
+      <thead><tr><th>項目</th><th>値</th><th class="row-copy"></th></tr></thead>
+      <tbody>
+        <tr><td>サインインURL</td><td><a href="https://158516431889.signin.aws.amazon.com/console" target="_blank" rel="noopener"><code>https://158516431889.signin.aws.amazon.com/console</code></a></td><td><button class="copy" data-copy="https://158516431889.signin.aws.amazon.com/console">コピー</button></td></tr>
+        <tr><td>アカウントID</td><td><code>158516431889</code></td><td><button class="copy" data-copy="158516431889">コピー</button></td></tr>
+      </tbody>
+    </table>
+  </section>
+
   <section>
     <h2>共通の固定値（C#・Java 共通）</h2>
     <table>
@@ -98,7 +112,7 @@
     <div class="field">
       <label for="name">あなたの名前（ローマ字・小文字）</label>
       <input id="name" type="text" value="ishikawa" autocomplete="off" spellcheck="false">
-      <small>例: tanaka → DB名は shoppingsite_tanaka などに置換されます</small>
+      <small>例: tanaka → DB名は shoppingsite_tanaka などに置換されます。同姓の人がいる場合は「下の名前＋姓」（例: taroyamada / hanakoyamada）を入力してください。</small>
     </div>
     <div class="field">
       <label for="pw">RDS admin パスワード（任意・この画面だけで使用）</label>
