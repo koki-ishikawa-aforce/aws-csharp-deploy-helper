@@ -150,7 +150,7 @@
 
   <section>
     <h2>3-1. DB入れ替え（フルリフレッシュ）SQL</h2>
-    <p class="note">SSMSの New Query で実行。クエリ窓のDBは <code>master</code> に。対象DBノードは折りたたむ。RDSは SINGLE_USER 不可のため KILL してから DROP。初回は DROP が自動スキップされます。</p>
+    <p class="note">SSMSの New Query で実行。クエリ窓のDBは <code>master</code> に。対象DBノードは折りたたむ。RDSは SINGLE_USER 不可のため KILL してから DROP。初回は DROP が自動スキップされます。<br><strong>日本語の文字化け対策</strong>：テーブルの日本語列が <code>varchar</code> のため、DB作成時に <code>COLLATE Japanese_CI_AS</code> を付けないと RDS 既定の Latin1 照合順序を継承し日本語が <code>?</code> に化けます。</p>
     <div class="block">
       <button class="copy" data-copy-target="sql-refresh">コピー</button>
       <pre id="sql-refresh" data-tpl="USE master;
@@ -165,7 +165,7 @@ GO
 IF DB_ID('{{db}}') IS NOT NULL   -- 存在する場合のみ（初回はスキップ）
     DROP DATABASE {{db}};
 GO
-CREATE DATABASE {{db}};
+CREATE DATABASE {{db}} COLLATE Japanese_CI_AS;
 GO"></pre>
     </div>
   </section>
