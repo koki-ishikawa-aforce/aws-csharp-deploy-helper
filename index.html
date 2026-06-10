@@ -44,6 +44,15 @@
                      margin-bottom:-2px; transition:color .15s, border-color .15s; }
   .langtoggle .tab:hover { color:var(--ink); }
   .langtoggle .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+  details.coll { background:var(--card); border:1px solid var(--line); border-radius:10px; margin-bottom:20px; }
+  details.coll > summary { cursor:pointer; list-style:none; padding:16px 18px; font-size:16px; font-weight:700;
+                           border-left:4px solid var(--accent); border-radius:10px; }
+  details.coll[open] > summary { border-radius:10px 10px 0 0; }
+  details.coll > summary::-webkit-details-marker { display:none; }
+  details.coll > summary::before { content:"\25B8\00a0"; color:var(--accent); }
+  details.coll[open] > summary::before { content:"\25BE\00a0"; }
+  details.coll > summary .hint { font-size:12px; font-weight:400; color:var(--muted); margin-left:8px; }
+  details.coll > .coll-body { padding:0 18px 16px; }
 </style>
 </head>
 <body>
@@ -195,8 +204,9 @@ GO"></pre>
       </table>
     </section>
 
-    <section>
-      <h2>Java：環境構築コマンド</h2>
+    <details class="coll">
+      <summary>Java：環境構築コマンド<span class="hint">（初回のみ・クリックで展開）</span></summary>
+      <div class="coll-body">
 
       <h3>Java（JDK）</h3>
       <div class="block">
@@ -366,7 +376,8 @@ WantedBy=multi-user.target</pre>
         <button class="copy" data-copy-target="j-mysql-connect">コピー</button>
         <pre id="j-mysql-connect">mysql -h newemployeetraining2026forjava.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com -u admin -p</pre>
       </div>
-    </section>
+      </div><!-- .coll-body -->
+    </details>
 
     <section>
       <h2>Java：デプロイ（DB名・ダンプ名・WAR名・IP を入れると生成）</h2>
