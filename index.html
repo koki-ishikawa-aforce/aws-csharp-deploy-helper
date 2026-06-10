@@ -479,8 +479,30 @@ sudo service tomcat start</pre></div>
     return fill(raw, vals());
   }
 
+  // 入力欄が空でテンプレートのプレースホルダが残っているか判定
+  function missingPlaceholders(text) {
+    var defs = [
+      { token: "<名前>", label: "名前（ローマ字）" },
+      { token: "<ダンプファイル名>", label: "ダンプファイル名" },
+      { token: "<warファイル名>", label: "WARファイル名" },
+      { token: "<EC2パブリックIP>", label: "EC2 パブリックIPv4" }
+    ];
+    var hits = [];
+    for (var i = 0; i < defs.length; i++) {
+      if (text.indexOf(defs[i].token) !== -1) { hits.push(defs[i].label); }
+    }
+    return hits;
+  }
+
   function copy(btn) {
     var text = resolveCopyText(btn);
+    var missing = missingPlaceholders(text);
+    if (missing.length) {
+      var proceed = window.confirm(
+        missing.join("・") + " が未入力です。\n上の入力欄に値を指定してください。\n\nこのままコピーしますか？"
+      );
+      if (!proceed) { return; }
+    }
     var done = function () {
       var old = btn.textContent;
       btn.textContent = "コピーしました";
