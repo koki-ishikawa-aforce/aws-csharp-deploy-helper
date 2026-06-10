@@ -369,24 +369,64 @@ WantedBy=multi-user.target</pre>
     </section>
 
     <section>
-      <h2>Java：デプロイ（DB名・ダンプファイル名を入れると生成）</h2>
+      <h2>Java：デプロイ（DB名・ダンプ名・WAR名・IP を入れると生成）</h2>
       <div class="inputs">
         <div class="field">
           <label for="jdb">DB名</label>
           <input id="jdb" type="text" value="shoppingsite_name" oninput="updateJava()">
-          <small>context.xml の接続URLと <code>use ＤＢ名;</code> に反映</small>
+          <small>mysqldump・context.xml・<code>use ＤＢ名;</code> に反映</small>
         </div>
         <div class="field">
           <label for="jdump">ダンプファイル名</label>
           <input id="jdump" type="text" value="" autocomplete="off" placeholder="例: shoppingsite.sql" oninput="updateJava()">
-          <small>EC2 へ送ったダンプファイルの名前。<code>source</code> コマンドに反映</small>
+          <small>mysqldump 出力・EC2 上の <code>source</code> に反映</small>
+        </div>
+        <div class="field">
+          <label for="jwar">WARファイル名</label>
+          <input id="jwar" type="text" value="" autocomplete="off" placeholder="例: ShoppingSite.war" oninput="updateJava()">
+          <small>EC2 への配置 <code>cp</code> と動作確認URLのパスに反映</small>
+        </div>
+        <div class="field">
+          <label for="jip">EC2 パブリックIPv4</label>
+          <input id="jip" type="text" value="" autocomplete="off" placeholder="例: 57.180.8.128" oninput="updateJava()">
+          <small>動作確認URLに反映</small>
         </div>
       </div>
-      <p class="note">context.xml（DB名）と DB投入コマンド（ダンプファイル名・DB名）に反映されます。</p>
+      <p class="note">デプロイ手順書（Java編）のコマンドを上から順にコピーできます。<code>&lt; &gt;</code> 表記は入力欄が空のときのプレースホルダです。</p>
+
+      <h3>① ダンプ作成（ローカル）</h3>
+      <div class="block"><button class="copy" data-copy-target="j-dump">コピー</button>
+        <pre id="j-dump"></pre></div>
+
+      <h3>② context.xml（AWS用）</h3>
       <div class="block"><button class="copy" data-copy-target="j-context">コピー</button>
         <pre id="j-context"></pre></div>
+
+      <h3>③ 所有者・グループ・権限（EC2）</h3>
+      <div class="block"><button class="copy" data-copy-target="j-perms">コピー</button>
+        <pre id="j-perms">sudo chgrp -R tomcat /opt/tomcat-10
+sudo chown -R tomcat /opt/tomcat-10
+sudo chmod -R 755 /opt/tomcat-10</pre></div>
+
+      <h3>④ RDS接続 → Dump実行 → 確認（EC2）</h3>
+      <div class="block"><button class="copy" data-copy-target="j-mysql-connect-dep">コピー</button>
+        <pre id="j-mysql-connect-dep">mysql -h newemployeetraining2026forjava.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com -u admin -p</pre></div>
       <div class="block"><button class="copy" data-copy-target="j-source">コピー</button>
         <pre id="j-source"></pre></div>
+
+      <h3>⑤ サービス起動（EC2）</h3>
+      <div class="block"><button class="copy" data-copy-target="j-services">コピー</button>
+        <pre id="j-services">exit
+sudo service httpd start
+sudo service tomcat start</pre></div>
+
+      <h3>⑥ WAR配置（EC2）</h3>
+      <div class="block"><button class="copy" data-copy-target="j-cp-war">コピー</button>
+        <pre id="j-cp-war"></pre></div>
+
+      <h3>⑦ 動作確認（ブラウザ）</h3>
+      <div class="block"><button class="copy" data-copy-target="j-url">コピー</button>
+        <pre id="j-url"></pre></div>
     </section>
 
   </div><!-- #lang-java -->
@@ -483,6 +523,21 @@ WantedBy=multi-user.target</pre>
     var src = document.getElementById('j-source');
     if(src){ src.textContent =
       'source ' + dump + ';\nshow databases;\nuse ' + db + ';\nselect * from <table名>;'; }
+    var dmp = document.getElementById('j-dump');
+    if(dmp){ dmp.textContent =
+      'mysqldump --databases -u root -p ' + db + ' > ' + dump; }
+    var warEl = document.getElementById('jwar');
+    var warRaw = (warEl && warEl.value.trim()) ? warEl.value.trim() : '';
+    var war = warRaw || '<warファイル名>';
+    var ctxPath = warRaw ? warRaw.replace(/\.war$/i, '') : 'ShoppingSite';
+    var cpw = document.getElementById('j-cp-war');
+    if(cpw){ cpw.textContent =
+      'sudo cp /home/ec2-user/' + war + ' /opt/tomcat-10/webapps/'; }
+    var ipEl = document.getElementById('jip');
+    var ip = (ipEl && ipEl.value.trim()) ? ipEl.value.trim() : '<EC2パブリックIP>';
+    var urlEl = document.getElementById('j-url');
+    if(urlEl){ urlEl.textContent =
+      'http://' + ip + '/' + ctxPath + '/views/login.jsp'; }
   }
   document.addEventListener('DOMContentLoaded', updateJava);
 </script>
