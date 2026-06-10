@@ -111,7 +111,7 @@
   <div class="inputs">
     <div class="field">
       <label for="name">あなたの名前（ローマ字・小文字）</label>
-      <input id="name" type="text" value="ishikawa" autocomplete="off" spellcheck="false">
+      <input id="name" type="text" value="" autocomplete="off" spellcheck="false" placeholder="例: yamada（ローマ字・小文字）">
       <small>例: tanaka → DB名は shoppingsite_tanaka などに置換されます。同姓の人がいる場合は「下の名前＋姓」（例: taroyamada / hanakoyamada）を入力してください。</small>
     </div>
     <div class="field">
@@ -405,7 +405,7 @@ WantedBy=multi-user.target</pre>
 
   function vals() {
     var raw = document.getElementById("name").value.trim();
-    var n = raw === "" ? "ishikawa" : raw;
+    var n = raw === "" ? "<名前>" : raw;
     var pw = document.getElementById("pw").value;
     return {
       "{{name}}": n,
